@@ -6,7 +6,7 @@ import { camelCase } from 'https://deno.land/x/case@2.1.1/mod.ts';
 const ArgsSchema = z.object({
   _: z.array(z.string()).length(1),
   path: z.string().default('./'),
-  noChildren: z.boolean().default(false),
+  'no-children': z.boolean().default(false),
 });
 const args = ArgsSchema.safeParse(flags.parse(Deno.args));
 
@@ -21,23 +21,23 @@ const componentCamelName = camelCase(componentName);
 const componentPath = path.join(args.data.path, `${componentName}.tsx`);
 const stylePath = path.join(args.data.path, `${componentName}.css.ts`);
 
-const addChildren = !args.data.noChildren;
+const addChildren = !args.data['no-children'];
 
 Deno.writeTextFileSync(
   componentPath,
   `
 import React from 'react';
-import { ${componentCamelName} } from './${componentName}.css';
+import { ${componentCamelName}Style } from './${componentName}.css';
 
 interface ${componentName}Props {
-  ${addChildren && `children: React.ReactNode;`}
+  ${addChildren ? `children: React.ReactNode;` : ''}
 }
 
 export const ${componentName}: React.FC<${componentName}Props> = (${
     addChildren ? '{ children }' : 'props'
   }) => {
-  return <div className={${componentCamelName}}>${
-    addChildren && '{children}'
+  return <div className={${componentCamelName}Style}>${
+    addChildren ? '{children}' : ''
   }</div>;
 }
 `
@@ -48,7 +48,7 @@ Deno.writeTextFileSync(
   `
 import { style } from '@vanilla-extract/css';
 
-export const ${componentCamelName} = style({
+export const ${componentCamelName}Style = style({
 
 });
 `
