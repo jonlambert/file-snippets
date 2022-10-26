@@ -12,8 +12,7 @@ rve Button
 
 Creates the following files:
 
-**Button.tsx**
-**Button.css.ts**
+**Button.tsx** + **Button.css.ts**
 
 ### Installation
 
