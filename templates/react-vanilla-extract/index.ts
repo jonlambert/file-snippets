@@ -11,7 +11,7 @@ const ArgsSchema = z.object({
 const args = ArgsSchema.safeParse(flags.parse(Deno.args));
 
 if (!args.success) {
-  console.error('usage: rve <component name>');
+  console.error('usage: rve <component name> [--no-children]');
   Deno.exit(0);
 }
 
